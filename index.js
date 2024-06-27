@@ -17,8 +17,12 @@ const razorpay = new Razorpay({
 });
 
 app.get("/", (req, res) => {
+  try{
   console.log("site is live")
   res.json({ message: "Hello from express" });
+  }catch(error){
+  res.json({ error });
+  }
 });
 
 app.post("/create-subscription", async (req, res) => {
