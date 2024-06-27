@@ -17,6 +17,7 @@ const razorpay = new Razorpay({
 });
 
 app.get("/", (req, res) => {
+  console.log("site is live")
   res.json({ message: "Hello from express" });
 });
 
