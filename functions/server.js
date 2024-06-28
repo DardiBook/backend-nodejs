@@ -1,6 +1,7 @@
 // server/api/create-subscription.js (example using Express)
 const express = require("express");
 const Razorpay = require("razorpay");
+const ServerlessHttp = require("serverless-http")
 const app = express();
 const crypto = require("crypto");
 const port = 3000;
@@ -10,6 +11,7 @@ require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
+
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -86,9 +88,17 @@ app.post("/getPlansById", async(req, res) => {
   }
 });
 
+// app.use('/.netlify/functions/server', router);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+const handler = ServerlessHttp(app);
+
+module.exports.handler = async(event, context) => {
+    const result = await handler(event, context);
+    return result;
+}
+
+// app.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });
 
 // module.exports = router;
