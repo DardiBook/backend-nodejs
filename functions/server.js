@@ -14,12 +14,9 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
 
 const client = new Client({
-  // node: 'https://search-dardibook-miq6lgfkkrkggpghxlvdo6kb74.us-east-1.es.amazonaws.com',
   node: process.env.SEARCH_URL,
   auth: {
-    // username: 'dardibook',
     username: process.env.AWS_SEARCH_USERNAME,
-    // password: 'DardiBook@2024'
     password: process.env.AWS_SEARCH_PASSWORD
   },
   headers: {
