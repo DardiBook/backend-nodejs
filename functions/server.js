@@ -6,11 +6,27 @@ const app = express();
 const crypto = require("crypto");
 const port = 3000;
 const cors = require("cors");
+const { Client } = require("@opensearch-project/opensearch");
 
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
+
+const client = new Client({
+  // node: 'https://search-dardibook-miq6lgfkkrkggpghxlvdo6kb74.us-east-1.es.amazonaws.com',
+  node: process.env.SEARCH_URL,
+  auth: {
+    // username: 'dardibook',
+    username: process.env.AWS_SEARCH_USERNAME,
+    // password: 'DardiBook@2024'
+    password: process.env.AWS_SEARCH_PASSWORD
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+});
 
 
 const razorpay = new Razorpay({
@@ -85,6 +101,24 @@ app.post("/getPlansById", async(req, res) => {
       res.json(planDetail)
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+app.get('/searchMedicine', async (req, res) => {
+  const { q } = req.query;
+  try {
+    const { body } = await client.search({
+      index: 'medicines',
+      body: {
+        query: {
+          match_phrase_prefix: { name: q }
+        }
+      }
+    });
+    res.send(body.hits.hits.map(hit => hit._source));
+  } catch (error) {
+    console.error('Elasticsearch error:', error);
+    res.status(500).json({ error: error.meta.body });
   }
 });
 
