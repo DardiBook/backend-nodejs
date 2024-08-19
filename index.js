@@ -9,7 +9,12 @@ const cors = require("cors");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
+// app.use(cors({ credentials: true, origin: true }));
+app.use(cors({
+  origin: ["https://dashboard.dardibook.in", "https://dardibook.in"], // Add allowed origins explicitly
+  credentials: true,
+}));
+
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
