@@ -13,7 +13,7 @@ require("dotenv").config();
 app.use(express.json());
 
 app.use(cors({
-  origin: '*',
+  origin: ['*','https://dardibook.in/','https://dashboard.dardibook.in/*'],
   credentials: true
 }));
 
