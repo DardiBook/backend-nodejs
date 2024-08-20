@@ -11,8 +11,29 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
+// app.use(cors({ credentials: true, origin: true }));
 
+const allowedOrigins = [
+  'https://dardibook.in',
+  'https://www.dardibook.in',
+  'http://localhost:3000',
+  'https://dashboard.dardibook.in',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin, like server-to-server or curl
+    if (!origin) return callback(null, true);
+
+    // Check if the origin is in the allowed origins list
+    if (allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
 
 const client = new Client({
@@ -123,12 +144,24 @@ app.get('/searchMedicine', async (req, res) => {
 
 // app.use('/.netlify/functions/server', router);
 
+// const handler = ServerlessHttp(app);
+
+// module.exports.handler = async(event, context) => {
+//     const result = await handler(event, context);
+//     return result;
+// }
+
+
 const handler = ServerlessHttp(app);
 
-module.exports.handler = async(event, context) => {
-    const result = await handler(event, context);
-    return result;
-}
+module.exports.handler = async (event, context) => {
+  const result = await handler(event, context);
+  result.headers['Access-Control-Allow-Origin'] = event.headers.origin;
+  result.headers['Access-Control-Allow-Credentials'] = 'true';
+  return result;
+};
+
+
 
 
 // app.listen(port, () => {
