@@ -17,7 +17,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
-app.options('/api/data', cors(corsOptions));
+app.options('/*', cors(corsOptions));
 
 const client = new Client({
   node: process.env.SEARCH_URL,
