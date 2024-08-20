@@ -16,7 +16,11 @@ app.use(cors({
   origin: ['*','https://dardibook.in/','https://dashboard.dardibook.in/*'],
   credentials: true
 }));
-
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 const client = new Client({
   node: process.env.SEARCH_URL,
   auth: {
