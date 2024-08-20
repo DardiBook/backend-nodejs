@@ -16,6 +16,7 @@ const allowedOrigins = [
   'https://dardibook.in',
   'https://www.dardibook.in',
   'http://localhost:3000',
+  'https://dashboard.dardibook.in',
 ];
 
 app.use(cors({
