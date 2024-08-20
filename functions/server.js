@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use(
 cors({
-origin: “https://www.dardibook.in”, // Explicitly specify the allowed origin
+origin: “https://dardibook.in”, // Explicitly specify the allowed origin
 credentials: true, // Important for cookies, authorization headers with HTTPS
 methods: [“GET”, “POST”, “PUT”, “DELETE”, “PATCH”, “OPTIONS”],
 allowedHeaders: [
