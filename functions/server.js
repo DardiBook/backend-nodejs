@@ -128,6 +128,18 @@ module.exports.handler = async(event, context) => {
     return result;
 }
 
+module.exports.handler = async (event, context) => {
+  const result = await handler(event, context);
+  result.headers = {
+    ...result.headers,
+    'Access-Control-Allow-Origin': 'true',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+  return result;
+};
+
+
+
 // app.listen(port, () => {
 //   console.log(`Server is running on http://localhost:${port}`);
 // });
