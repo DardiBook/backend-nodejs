@@ -15,7 +15,8 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',
   'https://dardibook.in',
-  'https://www.dardibook.in'
+  'https://www.dardibook.in',
+  'https://dashboard.dardibook.in'
 ];
 
 app.use(cors({
