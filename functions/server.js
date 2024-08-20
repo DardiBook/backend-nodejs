@@ -11,7 +11,7 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
+// app.use(cors({ credentials: true, origin: true }));
 
 const client = new Client({
   node: process.env.SEARCH_URL,
@@ -123,21 +123,10 @@ app.get('/searchMedicine', async (req, res) => {
 
 const handler = ServerlessHttp(app);
 
-// module.exports.handler = async(event, context) => {
-//     const result = await handler(event, context);
-//     return result;
-// }
-
-module.exports.handler = async (event, context) => {
-  const result = await handler(event, context);
-  result.headers = {
-    ...result.headers,
-    'Access-Control-Allow-Origin': 'https://dardibook.in/',
-    'Access-Control-Allow-Credentials': 'true',
-  };
-  return result;
-};
-
+module.exports.handler = async(event, context) => {
+    const result = await handler(event, context);
+    return result;
+}
 
 
 // app.listen(port, () => {
