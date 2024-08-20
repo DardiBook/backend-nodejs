@@ -11,7 +11,7 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000,https://dardibook.in,https://www.dardibook.in" }));
 
 
 const client = new Client({
