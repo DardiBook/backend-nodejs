@@ -11,13 +11,7 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-const corsOptions = {
-  origin: ['*','https://dardibook.in/','https://dashboard.dardibook.in/*'],
-  credentials: true
-}
-app.use(cors(corsOptions));
-
-app.options('/*', cors(corsOptions));
+app.use(cors({ credentials: true, origin: true }));
 
 const client = new Client({
   node: process.env.SEARCH_URL,
@@ -133,8 +127,6 @@ module.exports.handler = async(event, context) => {
     const result = await handler(event, context);
     return result;
 }
-
-
 
 // app.listen(port, () => {
 //   console.log(`Server is running on http://localhost:${port}`);
