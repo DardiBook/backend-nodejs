@@ -11,28 +11,8 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-// app.use(cors({ credentials: true, origin: "http://localhost:3000,https://dardibook.in,https://www.dardibook.in" }));
-const allowedOrigins = [
-  'https://dardibook.in',
-  'https://www.dardibook.in',
-  'http://localhost:3000',
-  'https://dashboard.dardibook.in',
-];
+app.use(cors({ credentials: true, origin: true }));
 
-app.use(cors({
-  origin: (origin, callback) => {
-    console.log('Incoming request from origin:', origin); // Debugging line
-
-    if (!origin) return callback(null, true); // Allow non-origin requests
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, origin);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
 
 
 const client = new Client({
