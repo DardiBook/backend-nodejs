@@ -16,16 +16,9 @@ app.use(express.json());
 
 app.use(
 cors({
-origin: "http://localhost:3000/documents/pricing",
+origin: "http://localhost:3000/",
 credentials: true,
 methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-allowedHeaders: [
-"Origin",
-"Content-Type",
-"Accept",
-"Authorization",
-"X-Request-With",
-],
 })
 );
 
