@@ -11,7 +11,25 @@ const { Client } = require("@opensearch-project/opensearch");
 require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
+// app.use(cors({ credentials: true, origin: true }));
+
+
+app.use(
+cors({
+origin: “https://www.dardibook.in”, // Explicitly specify the allowed origin
+credentials: true, // Important for cookies, authorization headers with HTTPS
+methods: [“GET”, “POST”, “PUT”, “DELETE”, “PATCH”, “OPTIONS”],
+allowedHeaders: [
+“Origin”,
+“Content-Type”,
+“Accept”,
+“Authorization”,
+“X-Request-With”,
+],
+})
+);
+
+
 
 const client = new Client({
   node: process.env.SEARCH_URL,
