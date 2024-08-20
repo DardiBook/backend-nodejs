@@ -14,9 +14,9 @@ app.use(express.json());
 // app.use(cors({ credentials: true, origin: "http://localhost:3000,https://dardibook.in,https://www.dardibook.in" }));
 const allowedOrigins = [
   'http://localhost:3000',
+  'https://dashboard.dardibook.in'
   'https://dardibook.in',
   'https://www.dardibook.in',
-  'https://dashboard.dardibook.in'
 ];
 
 app.use(cors({
