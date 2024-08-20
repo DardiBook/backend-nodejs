@@ -132,7 +132,7 @@ module.exports.handler = async (event, context) => {
   const result = await handler(event, context);
   result.headers = {
     ...result.headers,
-    'Access-Control-Allow-Origin': 'true',
+    'Access-Control-Allow-Origin': 'https://dardibook.in/',
     'Access-Control-Allow-Credentials': 'true',
   };
   return result;
