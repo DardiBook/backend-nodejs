@@ -12,7 +12,7 @@ require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
 
-app.use(cors({ credentials: true, origin: false }));
+app.use(cors({ credentials: true, origin: '*' }));
 
 const client = new Client({
   node: process.env.SEARCH_URL,
