@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
   }
 });
 
-app.get("/allPlans", async (req, res) => {
+app.post("/allPlans", async (req, res) => {
   try {
     const plans = await razorpay.plans.all();
     res.json(plans);
