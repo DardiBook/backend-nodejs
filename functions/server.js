@@ -41,6 +41,15 @@ app.get("/", (req, res) => {
   }
 });
 
+app.get("/allPlans", async (req, res) => {
+  try {
+    const plans = await razorpay.plans.all();
+    res.json(plans);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 app.post("/create-subscription", async (req, res) => {
   const { planId,total_count,customer_notify } = req.body;
   console.log(planId);
@@ -58,14 +67,6 @@ app.post("/create-subscription", async (req, res) => {
   }
 });
 
-app.get("/allPlans", async (req, res) => {
-  try {
-    const plans = await razorpay.plans.all();
-    res.json(plans);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
 
 app.post("/getSubDetails", async (req, res) => {
   const { id } = req.body;
