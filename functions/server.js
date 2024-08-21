@@ -12,12 +12,7 @@ require("dotenv").config();
 // const router = express.Router();
 app.use(express.json());
 
-const allowedOriginPatterns = [
-  /^https?:\/\/.*\.dardibook\.in\/*$/, // Matches any subdomain of example.com
-  /^https:\/\/dardibook\.in$/, // Matches exactly https://example2.com
-];
-
-app.use(cors({ credentials: true, origin: allowedOriginPatterns }));
+app.use(cors({ credentials: true, origin: true }));
 
 const client = new Client({
   node: process.env.SEARCH_URL,
