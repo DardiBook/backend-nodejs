@@ -1,5 +1,7 @@
 .env
 /node_modules
-
+# firebase and gcloud config files
+dardibook-from-firebase.json
+dardibook-from-gcloud.json
 # Local Netlify folder
 .netlify

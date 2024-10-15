@@ -1,17 +1,17 @@
 // server/api/create-subscription.js (example using Express)
 const express = require("express");
 const Razorpay = require("razorpay");
-const ServerlessHttp = require("serverless-http")
+const { createTask } = require("../EnqueueTaskCreator");
+const ServerlessHttp = require("serverless-http");
 const app = express();
 const crypto = require("crypto");
 const port = 3000;
 const cors = require("cors");
-
 require("dotenv").config();
 // const router = express.Router();
+// app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
-
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -19,16 +19,16 @@ const razorpay = new Razorpay({
 });
 
 app.get("/", (req, res) => {
-  try{
-  console.log("site is live")
-  res.json({ message: "Hello from express" });
-  }catch(error){
-  res.json({ error });
+  try {
+    console.log("site is live");
+    res.json({ message: "Hello from express" });
+  } catch (error) {
+    res.json({ error });
   }
 });
 
 app.post("/create-subscription", async (req, res) => {
-  const { planId,total_count,customer_notify } = req.body;
+  const { planId, total_count, customer_notify } = req.body;
   console.log(planId);
   console.log("req body : ", req.body);
   try {
@@ -36,7 +36,6 @@ app.post("/create-subscription", async (req, res) => {
       plan_id: planId,
       total_count: total_count, // number of billing cycles
       customer_notify: customer_notify,
-      // start_at: Math.floor(Date.now() / 1000) + 60, // subscription start time
     });
     res.json(subscription);
   } catch (error) {
@@ -78,27 +77,49 @@ app.post("/verification/", async (req, res) => {
   }
 });
 
-app.post("/getPlansById", async(req, res) => {
-  const {id} = req.body;
+app.post("/getPlansById", async (req, res) => {
+  const { id } = req.body;
   try {
-      const planDetail = await razorpay.plans.fetch(id)
-      res.json(planDetail)
+    const planDetail = await razorpay.plans.fetch(id);
+    res.json(planDetail);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// app.use('/.netlify/functions/server', router);
+// ================================== task functions and routes
+
+// Route to handle the "Send Prescription" request
+app.post("/queuePrescription", async (req, res) => {
+  const { patientPhoneNumber, prescriptionLink } = req.body;
+
+  try {
+    // Call createTask to enqueue the task
+    await createTask(patientPhoneNumber, prescriptionLink);
+    res.status(200).send("Prescription task queued successfully!");
+  } catch (error) {
+    console.error("Error in enqueueing task:", error);
+    res.status(500).send("Failed to enqueue task");
+  }
+});
+
+app.post("/sendPrescription", async (req, res) => {
+  const { patientPhoneNumber, prescriptionLink } = req.body;
+
+  try {
+    console.log(patientPhoneNumber, prescriptionLink); // Send the SMS
+    res.status(200).send("Prescription sent!");
+  } catch (error) {
+    console.error("Error sending prescription:", error);
+    res.status(500).send("Failed to send prescription");
+  }
+});
+
+// ===================================
 
 const handler = ServerlessHttp(app);
 
-module.exports.handler = async(event, context) => {
-    const result = await handler(event, context);
-    return result;
-}
-
-// app.listen(port, () => {
-//   console.log(`Server is running on http://localhost:${port}`);
-// });
-
-// module.exports = router;
+module.exports.handler = async (event, context) => {
+  const result = await handler(event, context);
+  return result;
+};
