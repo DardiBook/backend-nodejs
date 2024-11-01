@@ -3,6 +3,7 @@ const express = require("express");
 const Razorpay = require("razorpay");
 const { createTask } = require("../EnqueueTaskCreator");
 const ServerlessHttp = require("serverless-http");
+const { auth } = require("../firebaseAdmin.js");
 const app = express();
 const crypto = require("crypto");
 const port = 3000;
@@ -51,7 +52,6 @@ app.post("/create-subscription", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 
 app.post("/getSubDetails", async (req, res) => {
   const { id } = req.body;
@@ -117,6 +117,25 @@ app.post("/sendPrescription", async (req, res) => {
 });
 
 // ===================================
+
+app.post("/get-uid", async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  try {
+    const userRecord = await auth.getUserByEmail(email);
+    res.json({ uid: userRecord.uid });
+  } catch (error) {
+    if (error.code === "auth/user-not-found") {
+      res.status(404).json({ error: "User not found" });
+    } else {
+      res.status(500).json({ error: "Failed to retrieve UID" });
+    }
+  }
+});
 
 const handler = ServerlessHttp(app);
 

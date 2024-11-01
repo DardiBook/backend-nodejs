@@ -18,4 +18,5 @@ const client = new CloudTasksClient({
   },
 });
 
-module.exports = { admin, client };
+const auth = admin.auth();
+module.exports = { auth, admin, client };
